@@ -35,11 +35,11 @@ func init () {
 // When response code is 200, a JSON data would be output:
 //
 // 	{
-//		"responseCode": "{x}"
-//		"response":     "{y}",
+//		"response":     "{x}",
+//		"responseCode": "{y}"
 //	}
 //
-// where '{y}' is the response of the request; and '{x}' is a code for the response.
+// where '{x}' is the response of the request; and '{y}' is a code for the response.
 //
 // Possible codes are:
 // 	a: State updated successfully! 
@@ -110,8 +110,8 @@ var (
 	serviceVer = "0.1.0"
 	responseFormat = `
 		{
-			"responseCode": "%s",
-			"response":     "%s"
+			"response":     "%s",
+			"responseCode": "%s"
 		}
 	`
 )
