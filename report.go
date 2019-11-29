@@ -10,9 +10,10 @@ import (
 func init () {
 	if initReport != nil { return }
 
-	if svc.InitReport != nil {
+	errX := svc.InitReport ()
+	if errX != nil {
 		initReport = err.New (`Package "github.com/loc36-svc/svc1-svc1--svc" " +
-			"init failed.`, nil, nil, svc.InitReport ())
+			" init failed.`, nil, nil, svc.InitReport ())
 		return
 	}
 }
