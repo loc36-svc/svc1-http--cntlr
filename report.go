@@ -50,6 +50,8 @@ func init () {
 //	f: State provided seems invalid.
 //
 func Report (resChan http.ResponseWriter, req *http.Request) {
+	fmt.Println ("here 1")
+
 	if req.FormValue ("state") == "" || req.FormValue ("sensor") == "" ||
 	req.FormValue ("sensorPass") == "" || req.FormValue ("serviceId") == "" ||
 	req.FormValue ("serviceVer") == "" {
@@ -89,6 +91,8 @@ func Report (resChan http.ResponseWriter, req *http.Request) {
 
 	output := fmt.Sprintf (responseFormat, "State updated successfully!.", "a")
 	resChan.Write ([]byte (output))
+
+	fmt.Println ("here 2")
 }
 var (
 	serviceId = "1"
