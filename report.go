@@ -11,13 +11,15 @@ func init () {
 	if initReport != nil { return }
 
 	if svc.InitReport != nil {
-		initReport = err.New (`Package "github.com/loc36-svc/svc1-svc1--svc" init failed.`,
-			nil, nil, svc.InitReport ())
+		initReport = err.New (`Package "github.com/loc36-svc/svc1-svc1--svc" " +
+			"init failed.`, nil, nil, svc.InitReport ())
 		return
 	}
 }
 
-// Function Report () records the reported state of a sensor. It expects its request to be a POST request. The request must provide the following field data: state, sensor, sensorPass, serviceId, and serviceVer.
+// Function Report () records the reported state of a sensor. It expects its request to be
+// a POST request. The request must provide the following field data: state, sensor,
+// sensorPass, serviceId, and serviceVer.
 //
 //	state:      Should be the state of the sensor.
 //	sensor:     Should be the id of the sensor.
@@ -27,7 +29,8 @@ func init () {
 //
 // All the field data above are mandatory.
 //
-// Response code would ordinarily be: 200. Any other error code should be treated as fatal error.
+// Response code would ordinarily be: 200. Any other error code should be treated as fatal
+// error.
 // When response code is 200, a JSON data would be output:
 //
 // 	{
@@ -46,7 +49,9 @@ func init () {
 //	f: State provided seems invalid.
 //
 func Report (resChan http.ResponseWriter, req *http.Request) {
-	if req.FormValue ("state") == "" || req.FormValue ("sensor") == "" || req.FormValue ("sensorPass") == "" || req.FormValue ("serviceId") == "" || req.FormValue ("serviceVer") == "" {
+	if req.FormValue ("state") == "" || req.FormValue ("sensor") == "" ||
+	req.FormValue ("sensorPass") == "" || req.FormValue ("serviceId") == "" ||
+	req.FormValue ("serviceVer") == "" {
 
 		output := fmt.Sprintf (responseFormat, "Incomplete request data.", "c")
 		resChan.Write ([]byte (output))
@@ -54,7 +59,8 @@ func Report (resChan http.ResponseWriter, req *http.Request) {
 	}
 
 	if req.FormValue ("serviceId") != serviceId {
-		output := fmt.Sprintf (responseFormat, "Service requested from the wrong service.", "d")
+		output := fmt.Sprintf (responseFormat, "Service requested from the " +
+			"wrong service.", "d")
 		resChan.Write ([]byte (output))
 		return
 	}
@@ -67,7 +73,8 @@ func Report (resChan http.ResponseWriter, req *http.Request) {
 
 	state, errX := strconv.Atoi (req.FormValue ("state"))
 	if errX != nil {
-		output := fmt.Sprintf (responseFormat, "State provided seems invalid.", "f")
+		output := fmt.Sprintf (responseFormat, "State provided seems invalid.",
+			"f")
 		resChan.Write ([]byte (output))
 		return
 	}
