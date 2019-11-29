@@ -48,10 +48,10 @@ func init () {
 //	d: Service requested from the wrong service.
 //	e: Unsupported service version.
 //	f: State provided seems invalid.
+//	g: Unknown sensor.
+//	h: Incorrect sensor password.
 //
 func Report (resChan http.ResponseWriter, req *http.Request) {
-	fmt.Println ("here 1")
-
 	if req.FormValue ("state") == "" || req.FormValue ("sensor") == "" ||
 	req.FormValue ("sensorPass") == "" || req.FormValue ("serviceId") == "" ||
 	req.FormValue ("serviceVer") == "" {
@@ -75,7 +75,7 @@ func Report (resChan http.ResponseWriter, req *http.Request) {
 	}
 
 	state, errX := strconv.Atoi (req.FormValue ("state"))
-	if errX != nil {
+	if errX != nil || state < -1 || state > 1 {
 		output := fmt.Sprintf (responseFormat, "State provided seems invalid.",
 			"f")
 		resChan.Write ([]byte (output))
@@ -83,6 +83,19 @@ func Report (resChan http.ResponseWriter, req *http.Request) {
 	}
 
 	errY := svc.Service (state, req.FormValue ("sensor"), req.FormValue ("sensorPass"))
+
+	if errY == svc.ErrSensorDoesNotExist {
+		output := fmt.Sprintf (responseFormat, "Unknown sensor.", "g")
+		resChan.Write ([]byte (output))
+		return
+	}
+
+	if errY == svc.ErrIncorrectPass {
+		output := fmt.Sprintf (responseFormat, "Incorrect sensor password.", "h")
+		resChan.Write ([]byte (output))
+		return
+	}
+
 	if errY != nil {
 		output := fmt.Sprintf (responseFormat, "An error occured.", "b")
 		resChan.Write ([]byte (output))
@@ -91,8 +104,6 @@ func Report (resChan http.ResponseWriter, req *http.Request) {
 
 	output := fmt.Sprintf (responseFormat, "State updated successfully!.", "a")
 	resChan.Write ([]byte (output))
-
-	fmt.Println ("here 2")
 }
 var (
 	serviceId = "1"
